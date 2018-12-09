@@ -15,11 +15,11 @@ starting_date = datetime.add(months=-num_months)
 # % of months that are positive vs negative (Change as needed)
 gain_loss_weights = [0.85, 0.15]
 
-# Range of profits or losses (Chane as needed)
-range_revenue = [50000, 1200000]
+# Range of profits or losses 
+range_revenue = [1926159, -2196167]
 
 # Iteratively build every month between start and current date
-tracked_months = []
+tracked_months = [86]
 current_month = starting_date
 revenues = []
 
