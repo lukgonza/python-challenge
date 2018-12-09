@@ -10,7 +10,7 @@ file_output_name = ("budget_data.csv")
 num_months = 86
 import datetime
 x = datetime.datetime(Feb-2012)
-starting_date = datetime.add(months=-12_months)
+starting_date = datetime.add(months=-num_months)
 
 # % of months that are positive vs negative (Change as needed)
 gain_loss_weights = [0.85, 0.15]
