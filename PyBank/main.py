@@ -1,56 +1,72 @@
-# Dependencies
 import os
 import csv
 
+PyBank = os.path.join("Resources","budget_data.csv")
 
-# Create output file name
-file_output_name = ("budget_data.csv")
+ 
+profit = []
+monthly_changes = []
+date = []
 
-# Months of Financial Data
-num_months = 86
-import datetime
-x = datetime.datetime(Feb-2012)
-starting_date = datetime.add(months=-num_months)
+ 
+count = 0
+total_profit = 0
+total_change_profits = 0
+initial_profit = 0
 
-# % of months that are positive vs negative (Change as needed)
-gain_loss_weights = [0.85, 0.15]
+with open(PyBank, newline="") as csvfile:
+    csvreader = csv.reader(csvfile, delimiter=",")
+    csv_header = next(csvreader)
 
-# Range of profits or losses 
-range_revenue = [1926159, -2196167]
+    
+    for row i in csvreader:
+	    
+      count = count + 1 
 
-# Iteratively build every month between start and current date
-tracked_months = [86]
-current_month = starting_date
-revenues = []
+      
+      date.append(row[0])
 
-for x in range(0, num_months + 1):
+      profit.append(row[1])
+      total_profit = total_profit + int(row[1])
 
-    # Generate a list of formatted months
-    current_month = current_month.add(month=1)
-    current_month_string = current_month.date.strftime("%b-%Y")
-    tracked_months.append(current_month_string)
+      
+      final_profit = int(row[1])
+      monthly_change_profits = final_profit - initial_profit
 
-    # Generate a random revenue for each month
-    random_revenue = random.randrange(range_revenue[0], range_revenue[1])
-    revenues = revenues + [random_revenue]
+      
+      monthly_changes.append(monthly_change_profits)
 
-# Convert a set amount of revenues to be negative
-neg_months = int(num_months * gain_loss_weights[1])
+      total_change_profits = total_change_profits + monthly_change_profits
+      initial_profit = final_profit
 
-for x in range(neg_months):
-    revenues[x] = -1 * revenues[x]
+      
+      average_change_profits = (total_change_profits/count)
+      
+      
+      greatest_increase_profits = max(monthly_changes)
+      greatest_decrease_profits = min(monthly_changes)
 
-# Shuffle the revenues so the negatives appear sporadically
-random.shuffle(revenues)
+      increase_date = date[monthly_changes.index(greatest_increase_profits)]
+      decrease_date = date[monthly_changes.index(greatest_decrease_profits)]
+      
+    print("----------------------------------------------------------")
+    print("Financial Analysis")
+    print("----------------------------------------------------------")
+    print("Total Months: " + str(count))
+    print("Total Profits: " + "$" + str(total_profit))
+    print("Average Change: " + "$" + str(int(average_change_profits)))
+    print("Greatest Increase in Profits: " + str(increase_date) + " ($" + str(greatest_increase_profits) + ")")
+    print("Greatest Decrease in Profits: " + str(decrease_date) + " ($" + str(greatest_decrease_profits)+ ")")
+    print("----------------------------------------------------------")
 
-# Assemble the months and revenues into a single list
-fin_data = zip(tracked_months, revenues)
+with open('financial_analysis.txt', 'w') as text:
+    text.write("----------------------------------------------------------\n")
+    text.write("  Financial Analysis"+ "\n")
+    text.write("----------------------------------------------------------\n\n")
+    text.write("    Total Months: " + str(count) + "\n")
+    text.write("    Total Profits: " + "$" + str(total_profit) +"\n")
+    text.write("    Average Change: " + '$' + str(int(average_change_profits)) + "\n")
+    text.write("    Greatest Increase in Profits: " + str(increase_date) + " ($" + str(greatest_increase_profits) + ")\n")
+    text.write("    Greatest Decrease in Profits: " + str(decrease_date) + " ($" + str(greatest_decrease_profits) + ")\n")
+    text.write("----------------------------------------------------------\n")
 
-# Print the financial data to terminal
-print(fin_data)
-
-# Export a csv of the generated financial data
-with open(file_output_name, "w", newline="") as datafile:
-    writer = csv.writer(datafile)
-    writer.writerow(["Date", "Revenue"])
-    writer.writerows(fin_data)
